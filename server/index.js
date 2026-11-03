@@ -78,7 +78,7 @@ function tooMany(req) {
   const key = crypto.createHmac('sha256', salt).update(raw).digest('hex').slice(0, 16);
   const n = (buckets.get(key) || 0) + 1;
   buckets.set(key, n);
-  return n > 8;
+  return n > 200;
 }
 
 const THEMES = ['accueil', 'logement', 'etudes', 'argent', 'sante', 'discrimination', 'harcelement', 'positif', 'autre'];
