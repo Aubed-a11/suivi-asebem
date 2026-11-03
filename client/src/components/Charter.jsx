@@ -15,8 +15,10 @@ export default function Charter() {
           </div>
         </div>
 
-        <h2>Charte de confidentialité</h2>
-        <p className="section-intro">Signée par chaque référent. Huit engagements.</p>
+        <div className="section-head">
+          <h2>Charte de confidentialité</h2>
+          <p className="section-intro">Huit engagements, signés par chaque référent.</p>
+        </div>
         <ol className="charter">
           {charte.map((c, i) => (
             <li key={c.t}>

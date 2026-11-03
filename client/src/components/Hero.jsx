@@ -1,4 +1,4 @@
-import { hero, garanties } from '../data/content.js';
+import { garanties } from '../data/content.js';
 import Illustration from './Illustration.jsx';
 
 export default function Hero() {
@@ -8,7 +8,11 @@ export default function Hero() {
         <div className="hero-text">
           <h1>Tu peux en parler ici.<br />Sans dire qui tu es.</h1>
           <p className="hero-band">Cellule d’écoute ASEBEM, 100 % anonyme</p>
-          <p className="lead">{hero.texte}</p>
+          <p className="lead">
+            Une galère d’accueil, de logement ou d’études, une période difficile, un harcèlement, un abus,
+            ou au contraire quelque chose de bien : assieds-toi, prends ton temps. On écoute sans juger,
+            et on t’oriente vers de l’aide si tu le veux.
+          </p>
           <div className="hero-actions">
             <a className="btn btn-primary" href="#formulaire">Écrire anonymement</a>
             <a className="btn btn-ghost" href="#parler">Parler à quelqu’un</a>
@@ -20,9 +24,8 @@ export default function Hero() {
       </div>
       <div className="wrap">
         <dl className="guarantees">
-          {garanties.map((g, i) => (
+          {garanties.map((g) => (
             <div key={g.titre}>
-              <span className="g-num">{String(i + 1).padStart(2, '0')}</span>
               <dt>{g.titre}</dt>
               <dd>{g.texte}</dd>
             </div>

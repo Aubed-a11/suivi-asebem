@@ -101,9 +101,9 @@ export default function ShareForm() {
   return (
     <section className="section section-form" id="formulaire">
       <div className="wrap narrow">
-        <h2>Partager anonymement</h2>
+        <h2>Écris-nous, sans signer.</h2>
         <p className="section-intro">
-          Une seule question est obligatoire. Tout le reste est facultatif.
+          Comme une lettre qu’on glisse sous la porte. Une seule question est obligatoire, tout le reste est facultatif.
         </p>
         <div className="privacy-note">
           <p>
@@ -134,7 +134,8 @@ export default function ShareForm() {
           <fieldset>
             <legend><span className="q">3</span> Raconte-nous <span className="req">obligatoire</span></legend>
             <textarea
-              rows={8}
+              className="letter"
+              rows={9}
               maxLength={8000}
               value={d.message}
               onChange={(e) => set('message')(e.target.value)}
