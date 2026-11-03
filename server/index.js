@@ -39,7 +39,28 @@ app.use((req, res, next) => {
   next();
 });
 
+/* CORS : seul le front autorisé (ALLOWED_ORIGINS dans .env) peut appeler l'API. Aucun cookie accepté. */
+const ALLOWED = (process.env.ALLOWED_ORIGINS || '')
+  .split(',')
+  .map((s) => s.trim().replace(/\/$/, ''))
+  .filter(Boolean);
+
+app.use('/api', (req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && (ALLOWED.includes(origin) || ALLOWED.includes('*'))) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Max-Age', '86400');
+  }
+  if (req.method === 'OPTIONS') return res.sendStatus(204);
+  next();
+});
+
 app.use(express.json({ limit: '30kb' }));
+
+app.get('/api/health', (_req, res) => res.json({ ok: true, service: 'cellule-ecoute' }));
 
 /* Anti-spam en mémoire vive uniquement, clés hachées et sel tournant */
 let salt = crypto.randomBytes(32);
@@ -50,7 +71,10 @@ setInterval(() => {
 }, 60 * 60 * 1000).unref();
 
 function tooMany(req) {
-  const raw = req.socket?.remoteAddress || 'x';
+  /* Derrière un tunnel ou Nginx, l'adresse vient de l'en-tête du proxy.
+     Elle n'est jamais enregistrée : seulement hachée en mémoire pour l'anti-spam. */
+  const fwd = req.headers['cf-connecting-ip'] || String(req.headers['x-forwarded-for'] || '').split(',')[0];
+  const raw = (fwd || req.socket?.remoteAddress || 'x').trim();
   const key = crypto.createHmac('sha256', salt).update(raw).digest('hex').slice(0, 16);
   const n = (buckets.get(key) || 0) + 1;
   buckets.set(key, n);

@@ -47,7 +47,7 @@ export default function ShareForm() {
     setStatus('sending');
     setError('');
     try {
-      const r = await fetch('/api/message', {
+      const r = await fetch(`${import.meta.env.VITE_API_URL || ''}/api/message`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'omit',
