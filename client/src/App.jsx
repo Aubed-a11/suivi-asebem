@@ -17,7 +17,23 @@ export default function App() {
       if (e.key === 'Escape') quickExit();
     };
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+
+    // Apparition douce des sections au défilement
+    const els = document.querySelectorAll('.section .wrap');
+    els.forEach((el) => el.classList.add('reveal'));
+    const io = 'IntersectionObserver' in window
+      ? new IntersectionObserver((entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.08 })
+      : null;
+    els.forEach((el) => (io ? io.observe(el) : el.classList.add('is-visible')));
+
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      io && io.disconnect();
+    };
   }, []);
 
   return (
