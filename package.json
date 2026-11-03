@@ -1,0 +1,15 @@
+{
+  "name": "cellule-ecoute-asebem",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Cellule d'écoute anonyme de l'ASEBEM",
+  "scripts": {
+    "postinstall": "npm install --prefix client && npm install --prefix server",
+    "dev": "concurrently -k -n FRONT,BACK -c cyan,green \"npm run dev --prefix client\" \"npm run dev --prefix server\"",
+    "build": "npm run build --prefix client",
+    "start": "npm run build && npm start --prefix server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
